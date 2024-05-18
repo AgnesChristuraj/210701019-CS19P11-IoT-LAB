@@ -1,0 +1,37 @@
+STRUCT DEV_LED : Service::LightBulb{
+ int ledpin;
+SpanCharecteristic* power;
+
+DEV_LED(int ledpin) : Service::LightBulb()
+{
+   power = new Characteristic::On();
+   this->ledpin = ledpin;
+   pinMode(ledPin,OUTPUT);
+
+}
+
+Boolean update(){
+  digitalWriter(ledpin,power->getNewVal());
+  return(true);
+ }
+}
+
+
+STRUCT DEV_SWITCH : Service::Switch{
+ int ledpin;
+SpanCharecteristic* power;
+
+DEV_LED(int ledpin) : Service::Switch()
+{
+   power = new Characteristic::On();
+   this->ledpin = ledpin;
+   pinMode(ledPin,OUTPUT);
+   digitalWrite(ledPin, HIGH);
+
+}
+
+Boolean update(){
+  digitalWriter(ledpin, (int)!power->getNewVal<bool>());
+  return(true);
+ }
+}
